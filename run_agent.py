@@ -12,6 +12,7 @@ Loop:
 
 import os
 import re
+import shlex
 import subprocess
 import time
 import textwrap
@@ -39,7 +40,7 @@ client = anthropic.Anthropic()
 def git(cmd: str, cwd: Path = OPENCASTOR_REPO) -> str:
     """Run a git command in cwd and return stdout."""
     result = subprocess.run(
-        ["git"] + cmd.split(), cwd=cwd, capture_output=True, text=True
+        ["git"] + shlex.split(cmd), cwd=cwd, capture_output=True, text=True
     )
     return result.stdout.strip()
 
@@ -224,10 +225,9 @@ def revert_change(file_path: str, written_path: Path | None = None) -> None:
 
 def run_verification() -> tuple[int, str]:
     """Run pytest; return (exit_code, last 5 lines of output)."""
-    code, out = run_cmd(
-        "python -m pytest tests/ -x -q --tb=no 2>&1 | tail -5", timeout=300
-    )
-    return code, out
+    code, out = run_cmd("python -m pytest tests/ -x -q --tb=no", timeout=300)
+    last_lines = "\n".join(out.splitlines()[-5:])
+    return code, last_lines
 
 
 def log_result(commit: str, before: int, after: int, status: str, desc: str) -> None:
