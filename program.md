@@ -36,12 +36,19 @@ LOOP FOREVER (until killed):
 1. Pick a target file to improve based on the active track
 2. Read the file content
 3. Draft an improvement (new tests / docstrings / preset YAML)
-4. The orchestrator sends your draft to Claude Haiku for quality review
+4. The orchestrator sends your draft to Gemini 2.0 Flash for quality review
 5. If approved: write the file, run the metric command, check result
 6. If metric improved: git commit — status "keep"
 7. If metric same or worse: git checkout -- <file> — status "discard"
-8. Log result to results.tsv
+8. Log result to results.tsv (NOTE: results.tsv is untracked — do not git add it)
 9. Go to step 1
+
+## Logging results
+
+`results.tsv` is tab-separated (not comma-separated) with columns:
+`commit | metric_before | metric_after | delta | status | description`
+
+Status values: `keep`, `discard`, `rejected`, `crash`
 
 ## Constraints
 
@@ -55,3 +62,4 @@ LOOP FOREVER (until killed):
 
 Once the experiment loop has begun, do NOT pause to ask questions. The human is asleep.
 Run until killed externally. If you run out of ideas, rotate to the next candidate file.
+Each experiment runs in minutes — expect ~12/hour, ~72 overnight.

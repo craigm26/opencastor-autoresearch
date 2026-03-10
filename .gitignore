@@ -21,3 +21,6 @@ dev/
 
 # Local environment secrets
 .env
+
+# Results file (untracked by design — don't commit)
+results.tsv
