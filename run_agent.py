@@ -317,18 +317,26 @@ Rules:
 - Test real behavior, not trivial stubs
 - Return ONLY the Python test function, nothing else. No explanation.""",
 
-        "B": f"""Add a Google-style docstring to this Python function/class.
+        "B": f"""Add a Google-style docstring to this Python function. The function currently has NO docstring. You must add one.
 
+Function (from {target}):
 ```python
 {content}
 ```
 
-Rules:
-- Return ONLY the function/class with the docstring added
-- One-line summary, then Args: and Returns: if applicable
-- Do NOT change any logic
-- Do NOT add anything outside the function/class definition
-- Return Python code only, no explanation.""",
+A Google-style docstring looks like this:
+    def example(x: int) -> str:
+        \"\"\"Convert integer to string.
+
+        Args:
+            x: The integer to convert.
+
+        Returns:
+            String representation.
+        \"\"\"
+        return str(x)
+
+Now add a docstring to the function above. Return ONLY the complete function definition with docstring inserted after the def line. Python code only. No explanation. No ``` fences.""",
 
         "C": f"""Generate a RCAN config YAML preset for a robot with this hardware: {target}
 
