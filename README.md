@@ -1,74 +1,108 @@
 # opencastor-autoresearch
 
-Autonomous overnight improvement agent for [OpenCastor](https://github.com/craigm26/OpenCastor).
+**Tier 1** of the OpenCastor two-tier autoresearch system. Improves the
+[OpenCastor](https://github.com/craigm26/OpenCastor) *codebase* overnight.
 
 Forked from [karpathy/autoresearch](https://github.com/karpathy/autoresearch) and adapted for
-software improvement (tests, docs, presets) instead of ML training.
+software improvement (tests, docs, skills, harness) instead of ML training.
 
-## How it works
+---
 
-- **Draft model**: gemma3:1b via Ollama (on-device, free)
+## Two-tier autoresearch architecture
+
+| Tier | What | Scope | Output |
+|---|---|---|---|
+| **Tier 1 — This repo** | Improves OpenCastor *code* | All robots (shared) | PRs → releases |
+| **Tier 2 — `castor optimize`** | Improves each *robot's runtime state* | Per-robot only | Local config/memory |
+
+Tier 1 (this repo) improves code that ships to every robot via OpenCastor updates.
+Tier 2 ([#697](https://github.com/craigm26/OpenCastor/issues/697)) improves each robot's
+episodic memory, skill calibration, and context budget — privately and locally.
+
+---
+
+## How Tier 1 works
+
+- **Draft model**: `qwen2.5-coder:3b` via Ollama (on-device, free). Falls back to `gemma3:1b`
 - **Review model**: Gemini 2.0 Flash via Google ADC (no API key needed)
-- **Loop**: propose → review → apply → test → keep/revert → log
-- **Schedule**: 12am–6am nightly via cron
-- **Cost**: free (ADC quota)
+- **Scope**: ONE function/target per experiment (not whole files)
+- **Loop**: pick target → draft → review → apply → test → keep/revert → log
+- **Schedule**: midnight–6am nightly via cron
+- **Cost**: free (ADC quota, on-device Ollama)
 
-If you are new to the autoresearch pattern, Karpathy's [original repo](https://github.com/karpathy/autoresearch)
-and this ["Dummy's Guide"](https://x.com/hooeem/status/2030720614752039185) have good background.
+Key design principle: **small, focused changes = higher approval rate**.
+Never touches `castor/api.py`, `castor/safety.py`, or `castor/auth.py`.
 
-## Tracks (rotates by day)
+---
 
-| Day | Track | What it does |
-|-----|-------|-------------|
-| Mon/Thu | A | Write new pytest tests |
-| Tue/Fri | B | Add missing docstrings |
-| Wed/Sat | C | Generate RCAN presets |
-| Sun | A | Tests (default) |
+## Track rotation
+
+| Day | Track | What |
+|-----|-------|------|
+| Mon/Thu | A | Write ONE pytest test for ONE untested function |
+| Tue/Fri | B | Add ONE Google-style docstring to ONE function |
+| Wed | C | Generate ONE new RCAN config preset YAML |
+| Sat | D | Improve ONE skill SKILL.md body |
+| Sun | E | Write ONE harness/P66 invariant test |
+| 2–4am (any) | F | Mine trajectory DB for patterns (read-only) |
+
+---
 
 ## Setup
 
-1. `cp .env.example .env` — no API key needed, uses Google ADC
-2. Ensure ADC is configured: `gcloud auth application-default login`
-3. Create venv and install deps:
-   ```bash
-   python3 -m venv .venv
-   .venv/bin/pip install google-genai google-auth ollama gitpython
-   ```
-4. Ensure Ollama is running: `ollama pull gemma3:1b`
-5. Add cron job: `crontab -e` and add:
-   ```
-   0 0 * * * /home/craigm26/opencastor-autoresearch/cron.sh >> /home/craigm26/autoresearch.log 2>&1
-   ```
-
-## Manual run
-
 ```bash
-source .env
-export OPENCASTOR_REPO_PATH=/home/craigm26/OpenCastor
-export TODAY_TRACK=A
-.venv/bin/python3 run_agent.py
+# 1. Clone
+git clone https://github.com/craigm26/opencastor-autoresearch
+cd opencastor-autoresearch
+
+# 2. Create venv and install
+python3 -m venv .venv
+.venv/bin/pip install google-genai google-auth ollama
+
+# 3. Pull draft model
+ollama pull qwen2.5-coder:3b    # recommended
+# or: ollama pull gemma3:1b     # fallback
+
+# 4. Authenticate Google ADC (free, no API key)
+gcloud auth application-default login
+
+# 5. Set env
+cp .env.example .env
+# Edit .env: set OPENCASTOR_REPO_PATH
+
+# 6. Add cron
+crontab -e
+# Add: 0 0 * * * /path/to/opencastor-autoresearch/cron.sh >> ~/autoresearch.log 2>&1
 ```
+
+---
 
 ## Results
 
-Each night produces a `results.tsv` with columns:
-`commit | metric_before | metric_after | delta | status | description`
+```
+commit   before  after  delta  status   description
+abc1234  847     848    +1     keep     castor/tools.py/call: added test_call_unknown_tool
+...
+```
 
-`results.tsv` is intentionally left **untracked** by git (see `.gitignore`) — it's a local scratchpad.
-A GitHub PR is automatically opened in OpenCastor at 6am with the experiment summary.
+Track your keep rate:
+```bash
+grep keep results.tsv | wc -l   # experiments kept
+wc -l results.tsv               # total experiments
+```
 
-## Baseline metrics (2026-03-07)
+---
 
-- Tests: 4323
-- Missing docstrings: 1197
-- RCAN presets: 18
+## Relationship to OpenCastor
 
-## Notable forks of upstream autoresearch
+Improvements from Tier 1 flow into OpenCastor via normal PRs. Once merged, every robot
+running OpenCastor benefits. This is the "rising tide lifts all boats" loop.
 
-- [miolini/autoresearch-macos](https://github.com/miolini/autoresearch-macos) (MacOS)
-- [trevin-creator/autoresearch-mlx](https://github.com/trevin-creator/autoresearch-mlx) (MacOS MLX)
-- [jsegov/autoresearch-win-rtx](https://github.com/jsegov/autoresearch-win-rtx) (Windows)
+The Tier 2 per-robot optimizer ([`castor optimize`](https://github.com/craigm26/OpenCastor/issues/697))
+is the complementary "each robot learns from its own experience" loop.
 
-## License
-
-MIT
+Together:
+```
+Tier 1 (repo):  code improves → all robots benefit
+Tier 2 (robot): robot learns from its own trajectories → that robot improves
+```
