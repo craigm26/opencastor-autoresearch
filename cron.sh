@@ -29,6 +29,15 @@ echo "[cron] $(date) — Starting track=$TODAY_TRACK branch=$BRANCH"
 cd "$OC_REPO"
 git checkout -b "$BRANCH" 2>/dev/null || git checkout "$BRANCH"
 
+# ── Reviewer auth ────────────────────────────────────────────────────────────
+# REVIEWER_TOKEN: Bearer token for the reviewer robot's /api/chat endpoint.
+# Needed when the reviewer robot runs with hardened auth (returns 401 otherwise).
+# Set this to the API token configured in the reviewer robot's OpenCastor instance.
+# Overrides OPENCASTOR_API_TOKEN for reviewer calls specifically.
+# Example: export REVIEWER_TOKEN="oc-tok-xxxxxxxxxxxx"
+# If unset, autoresearch degrades gracefully (logs a warning, falls back to Gemini ADC).
+# export REVIEWER_TOKEN=""
+
 # ── Reviewer routing ─────────────────────────────────────────────────────────
 # If Alex (RRN-000000000005) is reachable, use RCAN review. Otherwise Gemini ADC.
 if curl -sf --connect-timeout 3 "http://alex.local:8000/health" >/dev/null 2>&1; then

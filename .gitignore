@@ -24,3 +24,4 @@ dev/
 
 # Results file (untracked by design — don't commit)
 results.tsv
+run.log

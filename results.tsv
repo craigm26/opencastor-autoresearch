@@ -1,2 +1,561 @@
 commit	metric_before	metric_after	delta	status	description
 none	0	0	0	rejected	castor/agents/base.py: FAIL - This change introduces a direct print statement, whic
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The `meta` section is redundant and duplicates the `m
+none	0	0	0	rejected	arduino_l298n: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	cytron_maker_pi: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	dynamixel_arm: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	elegoo_tumbller: FAIL - Missing `rcan_version` in the RCAN preset, violating 
+none	0	0	0	rejected	esp32_generic: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	freenove_4wd: FAIL - The `agent.model` field is missing, which is required
+none	0	0	0	rejected	groq_rover: FAIL - The RCAN preset is missing the `rcan_version` field w
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The proposed change is missing the required `rcan_ver
+none	0	0	0	rejected	lego_spike_prime: FAIL - The RCAN preset has duplicated entries for metadata.r
+none	0	0	0	rejected	makeblock_mbot: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	oak4_pro: FAIL - The RCAN preset is missing `rcan_version`.
+none	0	0	0	rejected	rpi_rc_car: FAIL - The RCAN preset is missing the `rcan_version` and `ag
+none	0	0	0	rejected	sunfounder_picar: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	vex_iq: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	0	0	0	rejected	waveshare_alpha: FAIL - The RCAN preset is missing the `rcan_version` field, 
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The RCAN preset is missing `agent.provider` and `agen
+none	0	0	0	rejected	adeept_generic: FAIL - The `agent_model`, `driver`, `model`, and `version` f
+none	0	0	0	rejected	amazon_kit_generic: FAIL - All robot presets have the same `metadata.robot_name`
+none	0	0	0	rejected	arduino_l298n: FAIL - The RCAN preset is missing `rcan_version`.
+none	0	0	0	rejected	cytron_maker_pi: FAIL - The proposed RCAN preset contains excessive repetitio
+none	0	0	0	rejected	dynamixel_arm: FAIL - The `drivers` list in the RCAN preset appears to be m
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	esp32_generic: FAIL - The RCAN preset is missing the `rcan_version` field.
+none	0	0	0	rejected	freenove_4wd: FAIL - The RCAN preset is missing the `rcan_version` field.
+none	0	0	0	rejected	groq_rover: FAIL - Missing `rcan_version` and `agent.provider` is empty.
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	lego_spike_prime: FAIL - `agent.provider` is missing a value, `rcan_version` i
+none	0	0	0	rejected	makeblock_mbot: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	oak4_pro: FAIL - The proposed RCAN preset is incomplete as it contains
+none	0	0	0	rejected	rpi_rc_car: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	sunfounder_picar: FAIL - Missing `rcan_version` in the RCAN preset definition.
+none	0	0	0	rejected	vex_iq: FAIL - The agent.model metadata is nested deeper than expect
+none	0	0	0	rejected	waveshare_alpha: FAIL - The RCAN preset is missing `rcan_version`.
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The RCAN preset is missing `rcan_version` and `agent.
+none	0	0	0	rejected	adeept_generic: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The RCAN preset is missing `rcan_version`, and the `a
+none	0	0	0	rejected	arduino_l298n: FAIL - The proposed change has a lot of repetition with the 
+none	18	18	0	crash	cytron_maker_pi: tests failed
+none	0	0	0	rejected	freenove_4wd: FAIL - Missing rcan_version in the RCAN preset.
+none	0	0	0	rejected	groq_rover: FAIL - The `agent.provider` and `agent.model` fields are emp
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The `drivers` list contains multiple entries that loo
+none	0	0	0	rejected	lego_spike_prime: FAIL - The proposed RCAN preset is missing the required `rca
+none	0	0	0	rejected	makeblock_mbot: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	oak4_pro: FAIL - The RCAN preset is missing the required `rcan_version
+none	17	17	0	crash	rpi_rc_car: tests failed
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	0	0	0	rejected	adeept_generic: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The proposed change is missing the required `rcan_ver
+none	0	0	0	rejected	arduino_l298n: FAIL - The proposed change modifies multiple RCAN presets, s
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset is missing `rcan_version`, `agent.pro
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The `drivers` list contains redundant and duplicated 
+none	0	0	0	rejected	esp32_generic: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	16	16	0	crash	freenove_4wd: tests failed
+none	0	0	0	rejected	oak4_pro: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	sunfounder_picar: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	vex_iq: FAIL - The `drivers` list is empty (set to `[None]`) for all
+none	0	0	0	rejected	waveshare_alpha: FAIL - Every preset now uses the waveshare_alpha robot name 
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - Missing `rcan_version` and `agent.provider` is empty.
+none	0	0	0	rejected	adeept_generic: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The preset is missing the required `rcan_version` fie
+none	0	0	0	rejected	arduino_l298n: FAIL - The RCAN preset has a non-empty driver list but all d
+none	0	0	0	rejected	dynamixel_arm: FAIL - All presets besides the `arduino_l298n` and `dynamixe
+none	0	0	0	rejected	elegoo_tumbller: FAIL - Missing `rcan_version` and empty/placeholder values f
+none	0	0	0	rejected	esp32_generic: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	groq_rover: FAIL - The 'agent.provider' and 'agent.model' fields are emp
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The proposed RCAN preset is missing `rcan_version` an
+none	0	0	0	rejected	lego_spike_prime: FAIL - The proposed change assigns the `lego_spike_prime` ro
+none	0	0	0	rejected	makeblock_mbot: FAIL - Missing `rcan_version` in the RCAN preset.
+none	15	15	0	crash	oak4_pro: tests failed
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The RCAN preset is missing `rcan_version` and has an 
+none	0	0	0	rejected	arduino_l298n: FAIL - The `agent` field in `metadata` should be `agent: pro
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The RCAN preset is missing `rcan_version` and `agent.
+none	0	0	0	rejected	esp32_generic: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	groq_rover: FAIL - Missing rcan_version.
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The proposed change is missing the required `rcan_ver
+none	0	0	0	rejected	lego_spike_prime: FAIL - `agent` should be a dictionary, not a list of keys.
+none	0	0	0	rejected	makeblock_mbot: FAIL - The proposed RCAN preset is missing `rcan_version`, `
+none	0	0	0	rejected	sunfounder_picar: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	vex_iq: FAIL - The proposed change duplicates metadata and drivers i
+none	0	0	0	rejected	waveshare_alpha: FAIL - The `drivers` list contains redundant entries with id
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	adeept_generic: FAIL - The RCAN preset has excessive and unnecessary nested 
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	arduino_l298n: FAIL - The proposed RCAN preset is missing the required `rca
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset for 'arduino_l298n' has an excessive 
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The `output` list is empty except for a placeholder, 
+none	0	0	0	rejected	esp32_generic: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	groq_rover: FAIL - The RCAN preset has excessive and redundant nesting o
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - `agent.model` is missing in the RCAN preset, which is
+none	0	0	0	rejected	lego_spike_prime: FAIL - The `makeblock` entry is incomplete and missing requi
+none	0	0	0	rejected	makeblock_mbot: FAIL - The drivers listed for `makeblock_mbot` in the last e
+none	0	0	0	rejected	sunfounder_picar: FAIL - The proposed RCAN preset is missing the required `rca
+none	0	0	0	rejected	vex_iq: FAIL - The proposed change unnecessarily duplicates metadata
+none	0	0	0	rejected	waveshare_alpha: FAIL - The RCAN preset is missing the `rcan_version` field.
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The `agent` field appears twice in each preset, which
+none	0	0	0	rejected	adeept_generic: FAIL - The `drivers` section is infinitely nested, making th
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	0	0	0	rejected	arduino_l298n: FAIL - The preset is missing the `metadata.agent` field, whi
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset has duplicated fields 'metadata.robot
+none	0	0	0	rejected	elegoo_tumbller: FAIL - Missing `rcan_version` in the RCAN preset definition 
+none	0	0	0	rejected	esp32_generic: FAIL - The proposed change only includes an incomplete YAML 
+none	0	0	0	rejected	groq_rover: FAIL - All presets have empty agent.model and agent.provider
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The proposed change sets the `robot_name` to `lego_mi
+none	0	0	0	rejected	lego_spike_prime: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	makeblock_mbot: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	0	0	0	rejected	sunfounder_picar: FAIL - The RCAN preset contains an extremely repetitive and 
+none	0	0	0	rejected	vex_iq: FAIL - All presets are being incorrectly configured for the 
+none	0	0	0	rejected	waveshare_alpha: FAIL - The `drivers` list is nested incorrectly, leading to 
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The proposed change contains several duplicate entrie
+none	0	0	0	rejected	adeept_generic: FAIL - The RCAN preset has an infinitely recursive structure
+none	0	0	0	rejected	amazon_kit_generic: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	arduino_l298n: FAIL - The 'agent' field within the 'metadata' dictionaries 
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset is missing `rcan_version` for each ro
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The RCAN preset is missing the `rcan_version` field a
+none	0	0	0	rejected	esp32_generic: FAIL - The RCAN preset is missing `rcan_version`, `metadata.
+none	0	0	0	rejected	groq_rover: FAIL - The agent.provider and agent.model fields are empty, 
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - This RCAN preset is missing the required `rcan_versio
+none	0	0	0	rejected	lego_spike_prime: FAIL - The RCAN preset is missing the `rcan_version`, the `d
+none	0	0	0	rejected	makeblock_mbot: FAIL - The proposed change violates Track C (RCAN preset) be
+none	0	0	0	rejected	sunfounder_picar: FAIL - Missing `rcan_version` field in the RCAN preset.
+none	0	0	0	rejected	vex_iq: FAIL - The proposed RCAN preset is malformed and contains du
+none	0	0	0	rejected	waveshare_alpha: FAIL - The RCAN preset has excessive and likely incorrect ne
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The RCAN preset is missing `rcan_version` and `agent.
+none	0	0	0	rejected	adeept_generic: FAIL - The RCAN preset has an infinitely recursive structure
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The proposed change introduces duplicate `metadata.ro
+none	0	0	0	rejected	arduino_l298n: FAIL - The proposed change is missing the `agent` field unde
+none	0	0	0	rejected	dynamixel_arm: FAIL - `agent: provider` should be `agent: [provider]`, `age
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The proposed change only includes `radeontrack: "rade
+none	0	0	0	rejected	esp32_generic: FAIL - Missing `rcan_version` in the RCAN preset violates Tr
+none	0	0	0	rejected	groq_rover: FAIL - The RCAN preset is missing the `rcan_version` field, 
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	lego_spike_prime: FAIL - The proposed RCAN preset change contains a deeply nes
+none	0	0	0	rejected	makeblock_mbot: FAIL - The `adept_generic` driver list contains `amazon_kit_
+none	0	0	0	rejected	sunfounder_picar: FAIL - The RCAN preset is missing the `rcan_version` field.
+none	0	0	0	rejected	vex_iq: FAIL - Missing rcan_version in the RCAN preset.
+none	0	0	0	rejected	waveshare_alpha: FAIL - The `vex_iq` entry is incomplete, missing data and br
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The RCAN preset is missing the `rcan_version` field f
+none	0	0	0	rejected	adeept_generic: FAIL - The `drivers` list and nested `meta` sections are rec
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	arduino_l298n: FAIL - The agent field should contain `agent_type` instead o
+none	0	0	0	rejected	dynamixel_arm: FAIL - The proposed change has incorrect driver assignments 
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The provided RCAN preset change unnecessarily modifie
+none	0	0	0	rejected	esp32_generic: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	groq_rover: FAIL - The proposed RCAN preset is missing `rcan_version` an
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The proposed change sets the `robot_name` to `lego_mi
+none	0	0	0	rejected	lego_spike_prime: FAIL - The RCAN preset is missing the required `rcan_version
+none	0	0	0	rejected	makeblock_mbot: FAIL - All RCAN presets besides `makeblock_mbot` are incorre
+none	0	0	0	rejected	sunfounder_picar: FAIL - The `drivers` entry in the RCAN preset is missing ess
+none	0	0	0	rejected	vex_iq: FAIL - The proposed change contains excessive repetition of 
+none	0	0	0	rejected	waveshare_alpha: FAIL - The RCAN preset is missing the `rcan_version` field.
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - The RCAN preset changes are setting the robot_name to
+none	0	0	0	rejected	adeept_generic: FAIL - The proposed RCAN preset is missing the `agent.provid
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	0	0	0	rejected	arduino_l298n: FAIL - This change applies the same metadata to all presets,
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset is missing the required `rcan_version
+none	6579	6579	0	crash	castor/agents/base.py: tests failed
+none	0	0	0	rejected	castor/agents/communicator.py: FAIL - The generated test code lacks imports from the `casto
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - This change lacks context, making it impossible to as
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The described behavior of modifying files and sending
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - `super().__ini` is a typo and should be `super().__in
+none	6579	6579	0	crash	castor/agents/orchestrator.py: tests failed
+none	6579	6579	0	crash	castor/agents/registry.py: tests failed
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The proposed change adds a subscription without a cor
+none	0	0	0	rejected	castor/api_errors.py: FAIL - This change lacks corresponding pytest tests to verif
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The provided code is incomplete, missing the `revoke`
+none	0	0	0	rejected	castor/approvals.py: FAIL - The `_save` and `_load` methods, which are necessary 
+none	0	0	0	rejected	castor/audit.py: FAIL - The proposed change lacks a proper Google-style docst
+none	0	0	0	rejected	castor/auth_jwt.py: ```python
+import os
+from unittest.mock import patch
+
+import 
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The provided code snippet is incomplete and contains 
+none	0	0	0	rejected	castor/backup.py: FAIL - The provided file `castor/backup.py` is incomplete, m
+none	0	0	0	rejected	castor/battery.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/behaviors.py: FAIL - The description mentions an external quality review t
+none	0	0	0	rejected	castor/benchmarker.py: ```python
+import pytest
+from castor.benchmarker import Bench
+none	0	0	0	rejected	castor/action_validator.py: FAIL - This code snippet lacks context and doesn't provide e
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The generated test code uses `unittest` instead of `p
+none	0	0	0	rejected	castor/agents/communicator.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The proposed change introduces a dataclass `SafetyVet
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: FAIL - The proposed change lacks context for proper evaluati
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The provided file content is incomplete, missing key 
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The proposed change is not a test file and does not i
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The review mentions files like `api.py`, `safety.py`,
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The provided code lacks any tests and instead contain
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The analysis hallucinates many non-existent component
+none	0	0	0	rejected	castor/api_errors.py: FAIL - The proposed change is not a pytest test file, but ra
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The provided file content is incomplete, missing type
+none	0	0	0	rejected	castor/approvals.py: ```python
+import pytest
+import os
+import json
+from castor.ap
+none	0	0	0	rejected	castor/audit.py: FAIL - The class `AuditLog` and the method `_hash_entry` are
+none	0	0	0	rejected	castor/auth_jwt.py: ```python
+import os
+import pytest
+from unittest.mock import 
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The function `check_obstacles` is incomplete and lack
+none	0	0	0	rejected	castor/backup.py: FAIL - The description mentions modifications and testing of
+none	0	0	0	rejected	castor/battery.py: FAIL - The proposed change is just a print statement which d
+none	0	0	0	rejected	castor/behaviors.py: FAIL - The analysis contains hallucinated descriptions like 
+none	0	0	0	rejected	castor/benchmarker.py: ```python
+import pytest
+from castor.benchmarker import Bench
+none	0	0	0	rejected	castor/action_validator.py: FAIL - The `ValidationResult` class's constructor in the exi
+none	0	0	0	rejected	castor/agents/base.py: ```python
+import pytest
+from castor.agents.base import BaseA
+none	0	0	0	rejected	castor/agents/communicator.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The provided code lacks testable functions, making it
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The file content is incomplete, specifically the defi
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The proposed change contains a file named "results.ts
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The proposed change lacks sufficient context to deter
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The proposed change lacks tests for the `AgentRegistr
+none	0	0	0	rejected	castor/agents/shared_state.py: ```python
+import pytest
+from castor.agents.shared_state impo
+none	0	0	0	rejected	castor/api_errors.py: FAIL - This change lacks a test case to verify that the unha
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The provided file content is incomplete, missing type
+none	0	0	0	rejected	castor/approvals.py: FAIL - The `_enqueue` method calls `self._save()` but the sa
+none	0	0	0	rejected	castor/audit.py: FAIL - Duplicate `AuditLog` class and `_hash_entry` function
+none	0	0	0	rejected	castor/auth_jwt.py: FAIL - The docstring for `create_token` is incomplete, missi
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The proposed change lacks any pytest tests to verify 
+none	0	0	0	rejected	castor/backup.py: FAIL - The provided file `castor/backup.py` contains primari
+none	0	0	0	rejected	castor/battery.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/behaviors.py: FAIL - The description does not include any specific code ch
+none	0	0	0	rejected	castor/benchmarker.py: FAIL - The `async` keyword is used incorrectly in the `run_b
+none	0	0	0	rejected	castor/action_validator.py: FAIL - The proposed change introduces an infinite loop that 
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The generated test code lacks proper setup and assert
+none	0	0	0	rejected	castor/agents/communicator.py: FAIL - `route_intent` has a return type annotation of `Optio
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The `write_test` function reads a file but only extra
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: FAIL - This change lacks context, making it impossible to as
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - This change modifies a file outside the test suite to
+none	0	0	0	rejected	castor/agents/observer.py: ```python
+import pytest
+
+from castor.agents.observer import 
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The provided description does not include any functio
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The proposed change lacks tests for the core function
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The provided file content is incomplete, missing esse
+none	0	0	0	rejected	castor/api_errors.py: FAIL - This change lacks a corresponding pytest test to veri
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The provided file content is incomplete, missing key 
+none	0	0	0	rejected	castor/approvals.py: FAIL - The proposed change does not include any actual code 
+none	0	0	0	rejected	castor/audit.py: FAIL - The proposed change does not include any tests, so it
+none	0	0	0	rejected	castor/auth_jwt.py: FAIL - The `create_token` function is missing the `secret` a
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The proposed change lacks associated pytest tests to 
+none	0	0	0	rejected	castor/backup.py: FAIL - The provided file `castor/backup.py` appears incomple
+none	0	0	0	rejected	castor/battery.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/conformance.py: FAIL - The docstring change lacks a description of the retur
+none	0	0	0	rejected	castor/client.py: FAIL - The plan proposes modifications to `_request`, `_post
+none	0	0	0	rejected	castor/swarm/consensus.py: FAIL - The proposed change is incomplete, only including the
+none	0	0	0	rejected	castor/metrics.py: FAIL - This proposal describes a complex automated agent mod
+none	0	0	0	rejected	castor/safety/authorization.py: FAIL - The proposed change involves modifying the "results.t
+none	0	0	0	rejected	castor/setup_service.py: FAIL - The provided code snippet is incomplete, making it im
+none	0	0	0	rejected	castor/doctor.py: FAIL - The diff contains imports within a try block that are
+none	0	0	0	rejected	castor/safety/bounds.py: FAIL - The review hallucinates the existence of an Enum type
+none	0	0	0	rejected	castor/web_wizard.py: FAIL - The description lacks specific information about how 
+none	0	0	0	rejected	castor/api.py: FAIL - This entire response is an analysis of the codebase a
+none	0	0	0	rejected	castor/conformance.py: FAIL - The docstring snippet is incomplete (lacks a function
+none	0	0	0	rejected	castor/client.py: FAIL - The analysis is high-level but doesn't describe the s
+none	0	0	0	rejected	castor/swarm/consensus.py: ```python
+"""SwarmConsensus — distributed task ownership via
+none	0	0	0	rejected	castor/metrics.py: FAIL - The explanation contains claims that are not directly
+none	0	0	0	rejected	castor/safety/authorization.py: FAIL - The proposed change "results.tsv = tab-separated (not
+none	0	0	0	rejected	castor/setup_service.py: FAIL - The docstrings are not Google-style and the default r
+none	0	0	0	rejected	castor/doctor.py: FAIL - The proposed change is incomplete and contains unfini
+none	0	0	0	rejected	castor/safety/bounds.py: FAIL - The provided code contains functions that are not par
+none	0	0	0	rejected	castor/web_wizard.py: FAIL - The description includes mentions of Gemini 2.0 Flash
+none	0	0	0	rejected	castor/api.py: FAIL - This proposal includes a breakdown of `api.py`, a for
+none	0	0	0	rejected	castor/conformance.py: FAIL - The proposed change only contains comments and doesn'
+none	0	0	0	rejected	castor/client.py: FAIL - The proposal violates the rule against hallucinated i
+none	0	0	0	rejected	castor/swarm/consensus.py: FAIL - This docstring seems to be just a repeatedly pasted o
+none	0	0	0	rejected	castor/metrics.py: FAIL - The `observe` method in the `Histogram` class has an 
+none	0	0	0	rejected	castor/safety/authorization.py: FAIL - The review contains hallucinated improvements such as
+none	0	0	0	rejected	castor/setup_service.py: FAIL - The provided file content is incomplete and does not 
+none	0	0	0	rejected	castor/doctor.py: FAIL - The proposed change is incomplete as it only includes
+none	0	0	0	rejected	castor/safety/bounds.py: FAIL - The proposed change lacks a docstring, which violates
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The proposed change is missing `rcan_version`, `agent
+none	0	0	0	rejected	arduino_l298n: FAIL - The RCAN preset is missing the `metadata.agent` key, 
+none	0	0	0	rejected	dynamixel_arm: FAIL - The RCAN preset is incomplete, missing `rcan_version`
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The proposed change violates Track C as all the RCAN 
+none	0	0	0	rejected	esp32_generic: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	groq_rover: FAIL - The proposed change is missing the `rcan_version` fie
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The RCAN preset is missing `rcan_version`, `agent.mod
+none	0	0	0	rejected	lego_spike_prime: FAIL - The RCAN preset contains excessive and redundant nest
+none	0	0	0	rejected	makeblock_mbot: FAIL - The proposed change sets the robot_name to makeblock_
+none	0	0	0	rejected	sunfounder_picar: FAIL - Missing `rcan_version` in the RCAN preset, which is r
+none	0	0	0	rejected	vex_iq: FAIL - The proposed change sets the robot_name to vex_iq for
+none	0	0	0	rejected	waveshare_alpha: FAIL - The proposed RCAN preset is missing the `rcan_version
+none	0	0	0	rejected	yahboom_rosmaster: FAIL - `agent.model` is missing, which violates Track C's re
+none	0	0	0	rejected	adeept_generic: FAIL - The proposed RCAN preset change is missing `agent.pro
+none	0	0	0	rejected	amazon_kit_generic: FAIL - The agent section is missing the required 'rcan_versi
+none	0	0	0	rejected	arduino_l298n: FAIL - Missing `rcan_version` in the RCAN preset.
+none	0	0	0	rejected	dynamixel_arm: FAIL - The 'yahboom_rosmaster' preset is incomplete, missing
+none	0	0	0	rejected	elegoo_tumbller: FAIL - The `agent.provider` field is empty, and the `drivers
+none	0	0	0	rejected	esp32_generic: FAIL - The RCAN preset is missing `rcan_version` and `agent.
+none	0	0	0	rejected	groq_rover: FAIL - The RCAN preset is missing `rcan_version` and `agent.
+none	0	0	0	rejected	lego_mindstorms_ev3: FAIL - The RCAN preset is missing `rcan_version`, has a `Non
+none	0	0	0	rejected	lego_spike_prime: FAIL - The proposed change sets the robot_name for all prese
+none	0	0	0	rejected	makeblock_mbot: FAIL - The proposed change has a placeholder value in the `d
+none	0	0	0	rejected	sunfounder_picar: FAIL - The proposed change is missing the required `rcan_ver
+none	0	0	0	rejected	vex_iq: FAIL - The RCAN preset is missing the `rcan_version` field a
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The proposed changes introduce placeholder functions 
+none	0	0	0	rejected	castor/agents/communicator.py: FAIL - The generated test code is incomplete, missing closin
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The provided file content lacks any functions to test
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The proposed change description includes references t
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The proposed change is an empty results.tsv file, whi
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The description lacks sufficient information to deter
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The proposed change does not include any test code.
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The provided file does not contain any functions or c
+none	0	0	0	rejected	castor/api_errors.py: FAIL - This change lacks a corresponding pytest test case to
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The code lacks input validation for label and key_id,
+none	7009	7009	0	crash	castor/approvals.py: tests failed
+none	0	0	0	rejected	castor/audit.py: FAIL - The change involves modifying 'results.tsv', which is
+none	0	0	0	rejected	castor/auth_jwt.py: FAIL - The docstring for `create_token` is incomplete, missi
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The provided file content is incomplete, missing the 
+none	0	0	0	rejected	castor/backup.py: FAIL - The provided file `castor/backup.py` has incomplete d
+none	0	0	0	rejected	castor/battery.py: FAIL - The proposed change adds a print statement to a core 
+none	0	0	0	rejected	castor/behaviors.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/benchmarker.py: FAIL - The code has duplicate property definitions for `min_
+none	0	0	0	rejected	castor/action_validator.py: FAIL - The `_run_metric_command` function returns a hardcode
+none	0	0	0	rejected	castor/agents/base.py: ```python
+import pytest
+from castor.agents.base import BaseA
+none	0	0	0	rejected	castor/agents/communicator.py: FAIL - The generated test code is missing, likely because th
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The generated test code is empty, providing no test c
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: FAIL - The proposed change lacks context and might impact th
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The generated code is incomplete and lacks the actual
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The `updated_det.is_obstacle is not None` line within
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The provided code snippet is incomplete and contains 
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The generated test code is missing, making it impossi
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The description lacks specific code examples or concr
+none	0	0	0	rejected	castor/api_errors.py: FAIL - The proposed change does not contain any tests and in
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The proposed change is incomplete, as the `revoke` fu
+none	0	0	0	rejected	castor/approvals.py: FAIL - The `_enqueue` method calls `self._save()` but the qu
+none	0	0	0	rejected	castor/audit.py: ```python
+import os
+import hashlib
+import pytest
+from castor
+none	0	0	0	rejected	castor/auth_jwt.py: There is no code provided, so I cannot assess whether it adh
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The proposed change lacks associated pytest tests to 
+none	0	0	0	rejected	castor/backup.py: FAIL - The provided code is missing the implementation detai
+none	0	0	0	rejected	castor/battery.py: FAIL - The proposed change introduces a print statement, whi
+none	0	0	0	rejected	castor/behaviors.py: FAIL - The description hallucinates several components (Gemi
+none	0	0	0	rejected	castor/benchmarker.py: FAIL - The code snippet saves benchmark results to a hardcod
+none	0	0	0	rejected	castor/action_validator.py: FAIL - The `errors` list in the `try` block is misleading be
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The Enum import is missing, specifically `from enum i
+none	0	0	0	rejected	castor/agents/communicator.py: FAIL - This change lacks context and doesn't provide enough 
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The generated test code is empty, providing no functi
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: FAIL - The proposed change lacks context and tests, making i
+none	0	0	0	rejected	castor/agents/navigator.py: There is no Python code provided to analyze, so I cannot ass
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The proposed change is not a valid Python file and pr
+none	0	0	0	rejected	castor/agents/orchestrator.py: ```python
+import pytest
+
+from castor.agents.orchestrator imp
+none	0	0	0	rejected	castor/agents/registry.py: ```python
+import pytest
+from unittest.mock import AsyncMock
+
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The description contains hallucinated components like
+none	0	0	0	rejected	castor/api_errors.py: FAIL - The proposed change only contains logging statements 
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The description mentions a continuous loop, interacti
+none	0	0	0	rejected	castor/approvals.py: Okay, I've reviewed the proposed `ApprovalGate` class for th
+none	0	0	0	rejected	castor/audit.py: There is no code provided to review, so I cannot assess whet
+none	0	0	0	rejected	castor/auth_jwt.py: FAIL - The provided context lacks any testable functions wit
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The duplicated "Check obstacles" task within the `_ru
+none	0	0	0	rejected	castor/backup.py: FAIL - The provided code lacks any pytest tests to validate 
+none	0	0	0	rejected	castor/battery.py: FAIL - This change introduces a `return` statement without a
+none	0	0	0	rejected	castor/behaviors.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/benchmarker.py: FAIL - The reported latencies are not being correctly calcul
+none	0	0	0	rejected	castor/action_validator.py: FAIL - The proposed change is an empty results.tsv file, whi
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The generated test code lacks necessary setup (mockin
+none	0	0	0	rejected	castor/agents/communicator.py: FAIL - The generated code lacks necessary imports and attemp
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The generated test code is incomplete, missing necess
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The provided code lacks tests (Track A) and also has 
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The provided change is incomplete and doesn't show an
+none	7009	7009	0	crash	castor/agents/orchestrator.py: tests failed
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The provided code lacks any pytest tests for the Agen
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The provided file content is missing the necessary im
+none	0	0	0	rejected	castor/api_errors.py: FAIL - The proposed change lacks a test case to verify the h
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The proposed change description includes concepts and
+none	0	0	0	rejected	castor/approvals.py: ```python
+import pytest
+import os
+import json
+from castor.ap
+none	0	0	0	rejected	castor/audit.py: FAIL - The proposed change introduces a file named `results.
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The proposed change introduces `print` statements dir
+none	0	0	0	rejected	castor/agents/communicator.py: ```python
+import pytest
+
+from castor.agents.communicator imp
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The generated test code is incomplete and doesn't inc
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: FAIL - The proposed change lacks context and doesn't adhere 
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The proposed change introduces multiple issues, inclu
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The proposed change is not a valid code diff and does
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The provided agent description is not related to the 
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The generated test code lacks necessary setup for tes
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The review mentions files (api.py, safety.py, auth.py
+none	0	0	0	rejected	castor/api_errors.py: FAIL - The provided code snippet lacks context (like imports
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The proposed change is incomplete, as the `revoke` fu
+none	0	0	0	rejected	castor/approvals.py: ```python
+import pytest
+import os
+import json
+from castor.ap
+none	0	0	0	rejected	castor/audit.py: There is no code provided to review, so I cannot assess if i
+none	0	0	0	rejected	castor/auth_jwt.py: ```python
+import pytest
+import os
+from castor import auth_jw
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The proposed change lacks any tests (Track A) to veri
+none	0	0	0	rejected	castor/backup.py: ```python
+import os
+import tarfile
+from unittest.mock import
+none	0	0	0	rejected	castor/battery.py: FAIL - This change introduces a bare `return` statement in `
+none	0	0	0	rejected	castor/behaviors.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/benchmarker.py: FAIL - The table creation logic repeats columns unnecessaril
+none	0	0	0	rejected	castor/action_validator.py: FAIL - The provided change only includes a docstring and doe
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The proposed test attempts to instantiate the abstrac
+none	0	0	0	rejected	castor/agents/communicator.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - The generated test code lacks necessary imports from 
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: FAIL - This change lacks sufficient context to evaluate whet
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The analysis lacks specific details about the propose
+none	0	0	0	rejected	castor/agents/observer.py: FAIL - The proposed change compares a `SceneGraph` object to
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The docstring for `reprioritize_intent` is incomplete
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The generated tests are trivial and don't test any re
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The provided file does not contain any functions to t
+none	0	0	0	rejected	castor/api_errors.py: FAIL - This change is missing a pytest test case that verifi
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The provided code snippet is incomplete, specifically
+none	0	0	0	rejected	castor/approvals.py: ```python
+import json
+import os
+import threading
+from dateti
+none	0	0	0	rejected	castor/audit.py: This change only involves an untracked file, so it doesn't a
+none	0	0	0	rejected	castor/auth_jwt.py: ```python
+import os
+
+import pytest
+
+from castor import auth_
+none	0	0	0	rejected	castor/avoidance.py: FAIL - The explanation lacks context of existing pytest test
+none	0	0	0	rejected	castor/backup.py: ```python
+import os
+import tarfile
+from unittest.mock import
+none	0	0	0	rejected	castor/battery.py: FAIL - The generated tests only cover the constructor and do
+none	0	0	0	rejected	castor/behaviors.py: FAIL - This change introduces a hardcoded string "1" to `res
+none	0	0	0	rejected	castor/benchmarker.py: FAIL - The code contains a duplicated `_log_results` functio
+none	0	0	0	rejected	castor/action_validator.py: ```python
+import pytest
+from castor.action_validator import 
+none	0	0	0	rejected	castor/agents/base.py: FAIL - The proposed change introduces print statements for e
+none	0	0	0	rejected	castor/agents/communicator.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/guardian.py: FAIL - There is no test provided to review, only the code th
+none	0	0	0	rejected	castor/agents/manipulator_agent.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/navigator.py: FAIL - The analysis is too high-level and doesn't provide sp
+none	0	0	0	rejected	castor/agents/observer.py: ```python
+import pytest
+from unittest.mock import MagicMock
+
+none	0	0	0	rejected	castor/agents/orchestrator.py: FAIL - The return of an empty dictionary from `run` breaks t
+none	0	0	0	rejected	castor/agents/registry.py: FAIL - The proposed change contains only docstrings and does
+none	0	0	0	rejected	castor/agents/shared_state.py: FAIL - The provided file is missing a critical import (`data
+none	0	0	0	rejected	castor/api_errors.py: FAIL - The proposed change lacks a test to ensure that unhan
+none	0	0	0	rejected	castor/apikeys.py: FAIL - The provided code snippet is incomplete, missing esse
+none	0	0	0	rejected	castor/approvals.py: FAIL - The proposed change removes the original functionalit
+none	0	0	0	rejected	castor/audit.py: FAIL - The proposed change introduces a file named `results.
+none	0	0	0	rejected	castor/auth_jwt.py: ```python
+import os
+from unittest import mock
+
+import pytest
+none	0	0	0	rejected	castor/conformance.py: ```python
+            return ConformanceResult(
+            
+none	0	0	0	rejected	castor/client.py: FAIL - The proposed agent risks violating multiple review ru
+none	0	0	0	rejected	castor/swarm/consensus.py: FAIL - The proposed change appears to be a pseudocode descri
+none	0	0	0	rejected	castor/metrics.py: FAIL - This proposal describes the classes in the `metrics.p
+none	0	0	0	rejected	castor/safety/authorization.py: FAIL - The analysis mentions files (safety.py) that are expl
+none	0	0	0	rejected	castor/setup_service.py: FAIL - The docstrings are inconsistent, some specify the ret
+none	0	0	0	rejected	castor/safety/bounds.py: FAIL - The review mentions Track C but there is no proposed 
+none	0	0	0	rejected	castor/web_wizard.py: FAIL - The proposed docstring additions are overly conversat
+none	0	0	0	rejected	castor/doctor.py: FAIL - The proposed change introduces dataclasses without th
+none	0	0	0	rejected	castor/api.py: FAIL - The review violates the rule about modifying the forb
+none	0	0	0	rejected	castor/conformance.py: FAIL - The function `_provider_reactive_layer` is calling it
+none	0	0	0	rejected	castor/client.py: FAIL - The explanation lacks specific details about how the 
+none	0	0	0	rejected	castor/swarm/consensus.py: FAIL - The provided code snippet is incomplete, lacking nece
+none	0	0	0	rejected	castor/metrics.py: FAIL - The proposed docstring change hallucinates several co
+none	0	0	0	rejected	castor/safety/authorization.py: FAIL - The proposed docstrings change attempts to describe t
+none	0	0	0	rejected	castor/setup_service.py: FAIL - The `subprocess.run` call in `_check_script_output` i
+none	0	0	0	rejected	castor/safety/bounds.py: FAIL - The docstring change does not meet Google-style docum
+none	0	0	0	rejected	castor/web_wizard.py: FAIL - The proposed change includes git commands that direct
+none	0	0	0	rejected	castor/doctor.py: FAIL - The proposed change contains incomplete code (`return
+none	0	0	0	rejected	castor/api.py: FAIL - The review comments touch the forbidden file `api.py`
+none	0	0	0	rejected	castor/conformance.py: FAIL - The docstring change is incomplete; it only shows the
+none	0	0	0	rejected	castor/client.py: FAIL - The proposed change describes a complex agent workflo
+none	0	0	0	rejected	castor/swarm/consensus.py: FAIL - The proposed change is incomplete and lacks context, 
+none	0	0	0	rejected	castor/metrics.py: FAIL - The proposed change lacks any actual docstrings, only
+none	0	0	0	rejected	castor/safety/authorization.py: FAIL - The proposed change does not follow Google-style docs

@@ -77,6 +77,39 @@ crontab -e
 
 ---
 
+## Environment variables
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `OPENCASTOR_REPO_PATH` | ✅ | — | Path to the local OpenCastor repo being improved |
+| `TODAY_TRACK` | no | `A` | Override the track (`A`–`F`). Normally set by cron.sh via day-of-week rotation |
+| `REVIEWER` | no | `gemini` | `rcan` to route reviews to a reviewer robot via RCAN HTTP API; `gemini` for local Gemini ADC |
+| `REVIEWER_URL` | no | `http://alex.local:8000` | Base URL of the reviewer robot when `REVIEWER=rcan` |
+| `REVIEWER_RRN` | no | `RRN-000000000005` | RRN of the reviewer robot |
+| `REVIEWER_TOKEN` | no | — | **Recommended.** Bearer token for the reviewer robot's `/api/chat` endpoint. Required when the robot runs with hardened auth. Takes precedence over `OPENCASTOR_API_TOKEN` for reviewer calls. |
+| `OPENCASTOR_API_TOKEN` | no | — | Fallback Bearer token if `REVIEWER_TOKEN` is not set. Can be a shared API token for the OpenCastor deployment. |
+
+### Auth / token setup
+
+When `REVIEWER=rcan`, the agent POSTs to `{REVIEWER_URL}/api/chat`. Hardened OpenCastor
+robots require a Bearer token; without one the request returns 401 and the agent falls back
+to Gemini ADC automatically.
+
+To enable authenticated RCAN review:
+
+```bash
+# Option A: reviewer-specific token (takes precedence)
+export REVIEWER_TOKEN="oc-tok-xxxxxxxxxxxx"
+
+# Option B: shared deployment token (used when REVIEWER_TOKEN is not set)
+export OPENCASTOR_API_TOKEN="oc-tok-xxxxxxxxxxxx"
+```
+
+If neither variable is set, autoresearch logs a warning and falls back to Gemini ADC — it
+will never crash due to a missing token.
+
+---
+
 ## Results
 
 ```

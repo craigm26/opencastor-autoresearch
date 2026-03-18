@@ -456,10 +456,23 @@ def _review_via_rcan(prompt: str) -> tuple[bool, str]:
         "max_iterations": 1,
     }).encode()
 
+    headers = {"Content-Type": "application/json", "X-RCAN-Scope": "chat"}
+    token = os.environ.get("REVIEWER_TOKEN") or os.environ.get("OPENCASTOR_API_TOKEN", "")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    else:
+        import warnings
+        warnings.warn(
+            "[autoresearch] No REVIEWER_TOKEN or OPENCASTOR_API_TOKEN set — "
+            "reviewer API call has no Bearer token; hardened robots may return 401. "
+            "Falling back to Gemini if request fails.",
+            stacklevel=2,
+        )
+
     req = urllib.request.Request(
         f"{REVIEWER_URL}/api/chat",
         data=payload,
-        headers={"Content-Type": "application/json", "X-RCAN-Scope": "chat"},
+        headers=headers,
         method="POST",
     )
     try:
