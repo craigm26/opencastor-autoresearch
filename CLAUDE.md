@@ -1,62 +1,55 @@
-# CLAUDE.md — opencastor-autoresearch Development Guide
+# CLAUDE.md — opencastor-autoresearch
 
 > **Agent context file.** Read this before making any changes.
 
-## What Is opencastor-autoresearch?
+## What Is This?
 
-AI-assisted research pipeline that continuously improves the OpenCastor codebase and discovers optimal agent harness configurations.
+`opencastor-autoresearch` evaluates candidate agent harness configurations nightly, reports results to `opencastor-ops`, and promotes winners via approval-gated CI with auto-merge on CI pass.
 
-**Repo**: craigm26/opencastor-autoresearch | **Python**: 3.10+
+**Repo**: craigm26/opencastor-autoresearch | **Branch**: master
 
-## Ecosystem Versions (as of 2026-03-19)
+## Repository Layout
 
-- **RCAN spec**: v1.6.1 (primary compliance reference) — rcan.dev
-- **OpenCastor runtime**: 2026.3.17.13 (yyyy.month.day.iteration)
-- **rcan-py**: 0.6.0 | **rcan-ts**: 0.6.0
-
-## Two Research Tracks
-
-### Codebase Autoresearch (run_agent.py)
-Nightly LLM-assisted research against the OpenCastor codebase.
-- Draft model: local Ollama (gemma3 or similar)
-- Reviewer: Gemini 2.0 Flash (Google ADC)
-- Tracks: A=tests, B=docs, C=RCAN presets, D=skill evals, E=harness tests, F=trajectory mining
-- Results: results.tsv, ~/.config/opencastor/trajectories.db
-
-### Harness Research (harness_research/)
-Discovers optimal agent harness YAML configurations.
-- Generates N=5 candidates via Gemini
-- Evaluates against 30 scenarios across home/industrial/general environments
-- Reports winners to opencastor-ops/harness-research/
-- Approval flow: Craig adds label `approve-harness` → PR auto-merges in OpenCastor on CI pass
-
-## Auth Pattern
-
-```python
-import google.auth
-import google.auth.transport.requests
-from google import genai
-
-_creds, _project = google.auth.default()
-_creds.refresh(google.auth.transport.requests.Request())
-client = genai.Client(vertexai=True, project=_project, location="us-central1")
+```
+opencastor-autoresearch/
+├── harness_research/
+│   ├── __init__.py
+│   ├── generator.py        # Generate candidate harness configs
+│   ├── evaluator.py        # Run candidates against scenarios (mode B: try-import castor)
+│   ├── ranker.py            # Score and rank candidates
+│   ├── reporter.py          # Generate markdown reports
+│   ├── promoter.py          # Open PRs in OpenCastor for winners
+│   ├── run.py               # CLI entry point (--dry-run supported)
+│   └── contribute_eval.py   # Contribute impact evaluation (#4)
+├── environments/
+│   ├── home.yaml           # 10 home scenarios
+│   ├── industrial.yaml     # 10 industrial scenarios
+│   └── general.yaml        # 10 general scenarios
+└── CLAUDE.md
 ```
 
-## Run
+## Ranker Score Formula
 
-```bash
-# Codebase research
-python run_agent.py
-
-# Harness research
-python harness_research/run.py --dry-run   # preview
-python harness_research/run.py             # full run
-
-# Cron (managed by cron.sh)
-bash cron.sh
+```
+score = (success_rate × 0.50) + (p66_rate × 0.25) + (token_efficiency × 0.15) + (latency_score × 0.10)
 ```
 
-## OpenCastor Version Format
+Champion must be beaten by >5% for a winner to be declared.
 
-`yyyy.month.day.iterationnumber` — e.g. `2026.3.17.13`
-RCAN spec v1.6.1 is the primary compliance reference.
+## CI Integration
+
+- **Nightly**: `opencastor-ops/.github/workflows/harness-research.yml` (1 AM Pacific, `0 8 * * *`)
+- **Promotion**: `opencastor-ops/.github/workflows/harness-promote.yml` (triggers on `approve-harness` label)
+- **Auto-merge**: `OpenCastor/.github/workflows/harness-automerge.yml` (merges `harness-update` PRs on CI pass)
+- **Champion**: `opencastor-ops/harness-research/champion.yaml`
+
+## Evaluator Mode B
+
+Try-import `castor.eval_harness` with graceful fallback to seeded simulation. This means CI can run without the full OpenCastor runtime installed.
+
+## Contribute Eval
+
+`contribute_eval.py` tests P66 preemption compliance under different harness configurations:
+- 5 scenarios: basic preemption, chat no-preempt, ESTOP, rapid cycle, multi-layer
+- Scoring: P66 compliance (40%), latency (20%), recovery (15%), idle detection (15%), thermal (10%)
+- Supports dry-run and live modes
