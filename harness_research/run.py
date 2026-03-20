@@ -13,6 +13,8 @@ Flags:
   --fleet             Use fleet submission data from Firestore instead of generating candidates
   --fleet-lookback N  Days of fleet data to include (default 7)
   --promote           Also run the promoter after a winning config is found
+  --push-to-queue     Push generated candidates to Firestore queue for fleet eval (skips local eval)
+  --max-evaluations N Max evaluations per candidate when pushing to queue (default 5)
 """
 
 import argparse
@@ -20,6 +22,49 @@ import logging
 import sys
 
 log = logging.getLogger(__name__)
+
+
+def _push_candidates_to_queue_for_tier(args, hardware_tier: str | None) -> int:
+    """Generate candidates and push to Firestore queue; return count pushed."""
+    from .generator import generate_candidates
+    from .queue_manager import get_queue_status, push_candidates_to_queue
+
+    tier_label = hardware_tier or "generic"
+    effective_tier = hardware_tier or "pi5-8gb"
+
+    log.info("=== Push-to-queue for tier: %s ===", tier_label)
+    log.info("Step 1: Generating %d candidates (tier=%s)...", args.candidates, tier_label)
+    candidates = generate_candidates(
+        n=args.candidates,
+        dry_run=args.dry_run,
+        hardware_tier=hardware_tier,
+    )
+    log.info("Generated %d candidates", len(candidates))
+
+    pushed = push_candidates_to_queue(
+        candidates,
+        hardware_tier=effective_tier,
+        max_evaluations=args.max_evaluations,
+    )
+
+    status = get_queue_status(hardware_tier=effective_tier)
+    tier_status = status.get(effective_tier, {})
+    log.info(
+        "Pushed %d candidates to Firestore queue for tier %s. "
+        "Queue: pending=%d assigned=%d completed=%d total=%d. "
+        "Robots will evaluate via 'castor contribute'.",
+        pushed,
+        effective_tier,
+        tier_status.get("pending", 0),
+        tier_status.get("assigned", 0),
+        tier_status.get("completed", 0),
+        tier_status.get("total", 0),
+    )
+    print(
+        f"Pushed {pushed} candidates to Firestore queue for tier {effective_tier}. "
+        f"Robots will evaluate via 'castor contribute'."
+    )
+    return pushed
 
 
 def _run_for_tier(args, hardware_tier: str | None) -> bool:
@@ -110,6 +155,10 @@ def main() -> int:
                         help="Days of fleet data to include (default: 7)")
     parser.add_argument("--promote", action="store_true",
                         help="Run promoter after a winner is found")
+    parser.add_argument("--push-to-queue", action="store_true",
+                        help="Push generated candidates to Firestore queue for fleet eval (skips local eval)")
+    parser.add_argument("--max-evaluations", type=int, default=5,
+                        help="Max evaluations per candidate when pushing to queue (default: 5)")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -134,12 +183,19 @@ def main() -> int:
 
     any_winner = False
     for tier in tiers:
-        if args.fleet:
+        if args.push_to_queue:
+            _push_candidates_to_queue_for_tier(args, hardware_tier=tier)
+            # skip local eval — robots evaluate via 'castor contribute'
+        elif args.fleet:
             results = _run_fleet_mode(args, hardware_tier=tier)
             any_winner = any_winner or any(results.values())
         else:
             had = _run_for_tier(args, hardware_tier=tier)
             any_winner = any_winner or had
+
+    if args.push_to_queue:
+        log.info("=== Push-to-queue complete — robots will evaluate via 'castor contribute' ===")
+        return 0
 
     log.info("=== Pipeline complete — winner found: %s ===", any_winner)
     return 0
