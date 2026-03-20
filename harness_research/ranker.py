@@ -32,8 +32,19 @@ def compute_score(result: EvalResults) -> float:
     )
 
 
-def load_champion_score() -> float:
-    """Load the current champion score from opencastor-ops."""
+def load_champion_score(hardware_tier: str | None = None) -> float:
+    """Load the current champion score from opencastor-ops.
+
+    If hardware_tier is given, loads from profiles/<tier>.yaml; else generic champion.yaml.
+    """
+    if hardware_tier:
+        profile_path = _OPS_DIR / "harness-research" / "profiles" / f"{hardware_tier}.yaml"
+        if profile_path.exists():
+            data = yaml.safe_load(profile_path.read_text())
+            if data and isinstance(data, dict):
+                return float(data.get("score", 0.0))
+        return 0.0  # No profile champion yet — any winner is an improvement
+
     if CHAMPION_PATH.exists():
         data = yaml.safe_load(CHAMPION_PATH.read_text())
         if data and isinstance(data, dict):
@@ -53,6 +64,7 @@ def rank_candidates(results: list[EvalResults]) -> list[tuple[EvalResults, float
 
 def find_winner(
     results: list[EvalResults],
+    hardware_tier: str | None = None,
 ) -> tuple[list[tuple[EvalResults, float]], EvalResults | None, float, float]:
     """Rank candidates and determine if any beats the champion.
 
@@ -62,7 +74,7 @@ def find_winner(
         champion_score: current champion score
         best_score: score of the top candidate
     """
-    champion_score = load_champion_score()
+    champion_score = load_champion_score(hardware_tier=hardware_tier)
     ranked = rank_candidates(results)
 
     if not ranked:

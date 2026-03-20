@@ -1,30 +1,115 @@
-"""Entry point for the harness research pipeline."""
+"""Entry point for the harness research pipeline.
+
+Supports three modes:
+  1. Standard (no flags): generate + evaluate candidates using Gemini, rank, report
+  2. --hardware-tier <tier>: same as (1) but seeded and prompted for a specific hardware tier
+  3. --fleet: read fleet contribute_eval submissions from Firestore instead of generating candidates
+
+Flags:
+  --dry-run           Use synthetic data, skip git/Firestore writes
+  --candidates N      Number of Gemini candidates to generate (default 5)
+  --hardware-tier T   Target a specific hardware tier (e.g. pi5-hailo8l)
+  --all-tiers         Loop over all known hardware tiers
+  --fleet             Use fleet submission data from Firestore instead of generating candidates
+  --fleet-lookback N  Days of fleet data to include (default 7)
+  --promote           Also run the promoter after a winning config is found
+"""
 
 import argparse
 import logging
 import sys
 
-from .evaluator import evaluate_all
-from .generator import generate_candidates
-from .ranker import find_winner
-from .reporter import write_report
-
 log = logging.getLogger(__name__)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Harness research pipeline")
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Skip git operations and PR creation",
+def _run_for_tier(args, hardware_tier: str | None) -> bool:
+    """Run the full pipeline for one hardware tier (or generic). Returns True if winner found."""
+    from .evaluator import evaluate_all
+    from .generator import generate_candidates
+    from .ranker import find_winner
+    from .reporter import write_report
+
+    tier_label = hardware_tier or "generic"
+    log.info("=== Pipeline for tier: %s ===", tier_label)
+
+    log.info("Step 1: Generating %d candidates (tier=%s)...", args.candidates, tier_label)
+    candidates = generate_candidates(
+        n=args.candidates,
+        dry_run=args.dry_run,
+        hardware_tier=hardware_tier,
     )
-    parser.add_argument(
-        "--candidates",
-        type=int,
-        default=5,
-        help="Number of candidate variations to generate (default: 5)",
+    log.info("Generated %d candidates", len(candidates))
+
+    log.info("Step 2: Evaluating candidates...")
+    results = evaluate_all(candidates)
+
+    log.info("Step 3: Ranking candidates...")
+    ranked, winner, champion_score, best_score = find_winner(
+        results, hardware_tier=hardware_tier,
     )
+
+    for i, (r, score) in enumerate(ranked, 1):
+        log.info("  #%d %s: %.4f — %s", i, r.candidate_id, score, r.description)
+
+    log.info("Step 4: Writing report...")
+    had_winner = write_report(
+        ranked, winner, champion_score,
+        dry_run=args.dry_run,
+        hardware_tier=hardware_tier,
+    )
+
+    if had_winner:
+        log.info("Winner: %s (%.4f > %.4f)", winner.candidate_id, best_score, champion_score)
+        if args.promote:
+            from .promoter import promote
+            log.info("Step 5: Promoting winner to OpenCastor...")
+            promote(dry_run=args.dry_run, hardware_tier=hardware_tier)
+    else:
+        log.info("No improvement (best=%.4f, champion=%.4f)", best_score, champion_score)
+
+    return had_winner
+
+
+def _run_fleet_mode(args, hardware_tier: str | None) -> dict[str, bool]:
+    """Run fleet-eval aggregation mode. Returns dict of tier → had_winner."""
+    from .contribute_eval import run_fleet_research
+
+    results = run_fleet_research(
+        hardware_tier=hardware_tier,
+        dry_run=args.dry_run,
+        lookback_days=args.fleet_lookback,
+    )
+
+    if args.promote:
+        from .promoter import promote, promote_all_profiles
+        if hardware_tier:
+            promote(dry_run=args.dry_run, hardware_tier=hardware_tier)
+        else:
+            promote_all_profiles(dry_run=args.dry_run)
+
+    return results
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Harness research pipeline",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__,
+    )
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Use synthetic data, skip git/Firestore writes")
+    parser.add_argument("--candidates", type=int, default=5,
+                        help="Number of candidate variations to generate (default: 5)")
+    parser.add_argument("--hardware-tier",
+                        help="Target a specific hardware tier (e.g. pi5-hailo8l, pi4-8gb)")
+    parser.add_argument("--all-tiers", action="store_true",
+                        help="Loop over all known hardware tiers")
+    parser.add_argument("--fleet", action="store_true",
+                        help="Use fleet Firestore submissions instead of generating candidates")
+    parser.add_argument("--fleet-lookback", type=int, default=7,
+                        help="Days of fleet data to include (default: 7)")
+    parser.add_argument("--promote", action="store_true",
+                        help="Run promoter after a winner is found")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -32,35 +117,31 @@ def main():
         format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
     )
 
+    from .generator import HARDWARE_TIERS
+
     log.info("=== Harness Research Pipeline ===")
-    log.info("Mode: %s", "dry-run" if args.dry_run else "live")
+    log.info("Mode: %s | dry-run: %s", "fleet" if args.fleet else "generate", args.dry_run)
 
-    # Step 1: Generate candidate harness configs
-    log.info("Step 1: Generating %d candidate harness configs...", args.candidates)
-    candidates = generate_candidates(n=args.candidates, dry_run=args.dry_run)
-    log.info("Generated %d candidates", len(candidates))
-
-    # Step 2: Evaluate each candidate against all scenarios
-    log.info("Step 2: Evaluating candidates against environment scenarios...")
-    results = evaluate_all(candidates)
-
-    # Step 3: Rank and find winner
-    log.info("Step 3: Ranking candidates...")
-    ranked, winner, champion_score, best_score = find_winner(results)
-
-    for i, (r, score) in enumerate(ranked, 1):
-        log.info("  #%d %s: %.4f — %s", i, r.candidate_id, score, r.description)
-
-    # Step 4: Report
-    log.info("Step 4: Writing report...")
-    had_winner = write_report(ranked, winner, champion_score, dry_run=args.dry_run)
-
-    if had_winner:
-        log.info("Winner found and reported: %s (%.4f > %.4f)", winner.candidate_id, best_score, champion_score)
+    if args.all_tiers:
+        tiers = HARDWARE_TIERS
+        log.info("Running for all %d hardware tiers: %s", len(tiers), tiers)
+    elif args.hardware_tier:
+        tiers = [args.hardware_tier]
+        log.info("Running for hardware tier: %s", args.hardware_tier)
     else:
-        log.info("No improvement over champion (best=%.4f, champion=%.4f)", best_score, champion_score)
+        tiers = [None]  # generic
+        log.info("Running generic (no hardware tier)")
 
-    log.info("=== Pipeline complete ===")
+    any_winner = False
+    for tier in tiers:
+        if args.fleet:
+            results = _run_fleet_mode(args, hardware_tier=tier)
+            any_winner = any_winner or any(results.values())
+        else:
+            had = _run_for_tier(args, hardware_tier=tier)
+            any_winner = any_winner or had
+
+    log.info("=== Pipeline complete — winner found: %s ===", any_winner)
     return 0
 
 
