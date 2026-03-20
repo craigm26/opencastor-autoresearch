@@ -4,10 +4,6 @@ import json
 import logging
 from pathlib import Path
 
-import google.auth
-import google.auth.transport.requests
-from google import genai
-
 log = logging.getLogger(__name__)
 
 DEFAULT_SEED = {
@@ -64,8 +60,12 @@ def _load_seed() -> dict:
     return DEFAULT_SEED.copy()
 
 
-def _get_genai_client() -> genai.Client:
+def _get_genai_client():
     """Create Gemini client using Google ADC (same pattern as run_agent.py)."""
+    import google.auth
+    import google.auth.transport.requests
+    from google import genai
+
     creds, project = google.auth.default()
     auth_req = google.auth.transport.requests.Request()
     creds.refresh(auth_req)
@@ -83,13 +83,45 @@ def _get_genai_client() -> genai.Client:
     )
 
 
-def generate_candidates(n: int = 5) -> list[dict]:
-    """Generate N candidate harness variations using Gemini.
+def _generate_synthetic(n: int, seed: dict) -> list[dict]:
+    """Generate synthetic candidates without Gemini (for CI dry-run)."""
+    import random
 
+    variations = [
+        ("high_think", {"thinking_budget": 2048}, "Double thinking budget"),
+        ("low_cost", {"cost_gate_usd": 0.02}, "Halve cost gate"),
+        ("max_iter_10", {"max_iterations": 10}, "Increase max iterations to 10"),
+        ("no_drift", {"drift_detection": False}, "Disable drift detection"),
+        ("verbal_consent", {"p66_consent_threshold": "verbal"}, "Lower consent to verbal"),
+        ("big_context", {"context_budget": 16384}, "Double context budget"),
+        ("min_think", {"thinking_budget": 512}, "Minimize thinking budget"),
+        ("no_retry", {"retry_on_error": False}, "Disable retry on error"),
+    ]
+
+    selected = random.sample(variations, min(n, len(variations)))
+    candidates = []
+    for var_id, tweaks, desc in selected:
+        config = seed.copy()
+        config.update(tweaks)
+        candidates.append({"id": var_id, "config": config, "description": desc})
+
+    return candidates
+
+
+def generate_candidates(n: int = 5, dry_run: bool = False) -> list[dict]:
+    """Generate N candidate harness variations.
+
+    When dry_run=True, uses synthetic variations instead of Gemini.
     Returns list of dicts with keys: id, config, description.
     """
     seed = _load_seed()
     log.info("Seed harness: %s", seed)
+
+    if dry_run:
+        log.info("Dry-run mode: generating synthetic candidates")
+        candidates = _generate_synthetic(n, seed)
+        log.info("Generated %d synthetic candidate configs", len(candidates))
+        return candidates
 
     client = _get_genai_client()
     prompt = GENERATION_PROMPT.format(n=n, seed_json=json.dumps(seed, indent=2))

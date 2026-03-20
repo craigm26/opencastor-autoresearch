@@ -37,7 +37,7 @@ def main():
 
     # Step 1: Generate candidate harness configs
     log.info("Step 1: Generating %d candidate harness configs...", args.candidates)
-    candidates = generate_candidates(n=args.candidates)
+    candidates = generate_candidates(n=args.candidates, dry_run=args.dry_run)
     log.info("Generated %d candidates", len(candidates))
 
     # Step 2: Evaluate each candidate against all scenarios
