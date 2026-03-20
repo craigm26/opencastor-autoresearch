@@ -139,6 +139,10 @@ def generate_candidates(n: int = 5, dry_run: bool = False) -> list[dict]:
             text = text.rsplit("```", 1)[0]
         text = text.strip()
 
+    # Gemini occasionally emits trailing commas — strip them before parsing
+    import re as _re
+    text = _re.sub(r",(\s*[}\]])", r"\1", text)
+
     candidates = json.loads(text)
     if not isinstance(candidates, list):
         raise ValueError(f"Expected JSON array from Gemini, got {type(candidates)}")
