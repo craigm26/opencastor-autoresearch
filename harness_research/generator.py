@@ -147,10 +147,18 @@ def _load_seed(hardware_tier: str | None = None) -> dict:
 # ─── Gemini client ────────────────────────────────────────────────────────────
 
 def _get_genai_client():
-    """Create Gemini client using Google ADC."""
+    """Create Gemini client — prefers GEMINI_API_KEY env var, falls back to ADC/Vertex."""
+    import os
+
+    from google import genai
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if api_key:
+        return genai.Client(api_key=api_key)
+
+    # Fallback: Google ADC / Vertex AI
     import google.auth
     import google.auth.transport.requests
-    from google import genai
 
     creds, project = google.auth.default()
     auth_req = google.auth.transport.requests.Request()
