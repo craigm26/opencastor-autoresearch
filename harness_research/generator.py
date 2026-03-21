@@ -253,6 +253,43 @@ _SYNTHETIC_VARIATIONS: dict[str | None, list[tuple]] = {
 }
 
 
+# ─── Pattern / Memory / Security design-space variations (#7) ────────────────
+
+PATTERN_VARIATIONS: list[dict] = [
+    {"name": "single_agent_supervisor"},
+    {"name": "initializer_executor", "ledger_dir": "/tmp"},
+    {"name": "multi_agent", "mode": "sequential"},
+]
+
+MEMORY_VARIATIONS: list[dict] = [
+    {"backend": "working_memory", "max_tokens": 2048, "overflow": "truncate"},
+    {"backend": "filesystem", "max_tokens": 4096, "overflow": "drop_oldest"},
+]
+
+SECURITY_VARIATIONS: list[dict] = [
+    {"guardrail": False, "telemetry": False},
+    {"guardrail": True, "mode": "audit", "telemetry": True},
+]
+
+
+def _apply_design_dimensions(candidates: list[dict]) -> list[dict]:
+    """Round-robin assign pattern/memory/security keys to candidates.
+
+    Backward compatible — existing keys are not overwritten; adds only if absent.
+    """
+    n = len(candidates)
+    for i, cand in enumerate(candidates):
+        config = cand.get("config", {})
+        if "pattern" not in config:
+            config["pattern"] = PATTERN_VARIATIONS[i % len(PATTERN_VARIATIONS)]
+        if "memory" not in config:
+            config["memory"] = MEMORY_VARIATIONS[i % len(MEMORY_VARIATIONS)]
+        if "security" not in config:
+            config["security"] = SECURITY_VARIATIONS[i % len(SECURITY_VARIATIONS)]
+        cand["config"] = config
+    return candidates
+
+
 def _generate_synthetic(n: int, seed: dict, hardware_tier: str | None = None) -> list[dict]:
     """Generate synthetic candidates without Gemini (for CI dry-run)."""
     import random
@@ -263,7 +300,7 @@ def _generate_synthetic(n: int, seed: dict, hardware_tier: str | None = None) ->
         config = seed.copy()
         config.update(tweaks)
         candidates.append({"id": var_id, "config": config, "description": desc})
-    return candidates
+    return _apply_design_dimensions(candidates)
 
 
 # ─── Public API ──────────────────────────────────────────────────────────────
@@ -332,6 +369,7 @@ def generate_candidates(
         raise ValueError(f"Expected JSON array from Gemini, got {type(candidates)}")
 
     log.info("Generated %d candidate configs (tier=%s)", len(candidates), hardware_tier)
+    candidates = _apply_design_dimensions(candidates)
     if model_research:
         candidates = _expand_model_variants(candidates)
         log.info("Expanded to %d model-variant candidates", len(candidates))
