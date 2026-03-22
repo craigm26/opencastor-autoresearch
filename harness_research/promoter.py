@@ -133,9 +133,31 @@ def _update_firestore_robots(
         field_name = (
             f"harness_tunables_{_sanitize_model_id(model_id)}" if model_id else "harness_tunables"
         )
+        pending_field = (
+            f"harness_pending_{_sanitize_model_id(model_id)}" if model_id else "harness_pending"
+        )
         for robot in robots:
-            robot.reference.update({field_name: harness_update})
-            log.info("Updated robot %s %s", robot.id, field_name)
+            robot_data = robot.to_dict() or {}
+            # Respect per-robot auto_apply flag (default: False — never auto-deploy)
+            auto_apply = robot_data.get("contribute", {}).get("auto_apply_champion", False)
+            if auto_apply:
+                robot.reference.update({field_name: harness_update})
+                log.info("Auto-applied champion to robot %s (%s)", robot.id, field_name)
+            else:
+                # Store as pending — user must explicitly apply via app or API
+                robot.reference.update({
+                    pending_field: {
+                        **harness_update,
+                        "_candidate_id": candidate_id if 'candidate_id' in dir() else "unknown",
+                        "_score": score if 'score' in dir() else 0.0,
+                        "_pending_since": date.today().isoformat(),
+                    }
+                })
+                log.info(
+                    "Stored pending champion for robot %s — auto_apply=False, "
+                    "user must apply manually via app or POST /api/harness/apply-champion",
+                    robot.id,
+                )
 
     except Exception as e:
         log.warning("Firestore update skipped: %s", e)
@@ -201,29 +223,17 @@ def promote(
         hardware_tier or "generic", score, champion_date, candidate_id,
     )
 
-    # For generic champion: update default_harness.yaml in OpenCastor
-    # For per-tier: skip (harness is tier-specific, not a global default)
-    if not hardware_tier:
-        if dry_run:
-            log.info("[dry-run] Would write generic champion to %s", TARGET_HARNESS)
-            log.info("[dry-run] Config: %s", config)
-        else:
-            try:
-                _run(["git", "checkout", "main"], cwd=OPENCASTOR_REPO)
-                _run(["git", "pull", "--ff-only"], cwd=OPENCASTOR_REPO)
-                _write_harness(config, score, champion_date, candidate_id)
-                _run(["git", "add", str(TARGET_HARNESS)], cwd=OPENCASTOR_REPO)
-                _run(
-                    ["git", "commit", "-m",
-                     f"feat(harness): update default agent harness {today} "
-                     f"[{candidate_id}, score={score:.4f}]"],
-                    cwd=OPENCASTOR_REPO,
-                )
-                _run(["git", "push", "origin", "main"], cwd=OPENCASTOR_REPO)
-                log.info("Pushed harness update to OpenCastor main")
-            except subprocess.CalledProcessError as e:
-                log.error("Promotion to OpenCastor failed: %s\n%s", e, e.stderr)
-                raise
+    # Write champion to ops repo champion.yaml (always — this is the source of truth)
+    # Do NOT auto-push to OpenCastor default_harness.yaml — deployment is opt-in per robot.
+    # Users apply via: app toggle, POST /api/harness/apply-champion, or castor harness apply
+    log.info(
+        "Champion stored: %s (score=%.4f). "
+        "Deployment is opt-in — use app or API to apply to individual robots or fleet.",
+        candidate_id, score,
+    )
+    if dry_run:
+        log.info("[dry-run] Would store champion as pending in Firestore (not auto-deploy)")
+        log.info("[dry-run] Config: %s", config)
 
     # Update Firestore (scoped by hardware_tier and/or model_id when set)
     _update_firestore_robots(config, hardware_tier=hardware_tier, model_id=model_id, dry_run=dry_run)
