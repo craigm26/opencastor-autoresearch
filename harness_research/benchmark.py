@@ -201,7 +201,7 @@ class BenchmarkResult:
     candidate_id: str
     config: dict
     task_results: list[TaskResult] = field(default_factory=list)
-    model_id: str = "gemini-2.5-flash-preview-04-17"
+    model_id: str = "gemini-2.5-flash"
     error: str | None = None
 
     @property
@@ -364,7 +364,7 @@ def _call_gemini(
 
 def evaluate_candidate_real(
     candidate: dict,
-    model_id: str = "gemini-2.5-flash-preview-04-17",
+    model_id: str = "gemini-2.5-flash",
     tasks: list[dict] | None = None,
 ) -> BenchmarkResult:
     """Run OHB-1 benchmark on a candidate using real LLM calls.
@@ -462,7 +462,7 @@ def evaluate_candidate_real(
 def validate_finalists(
     candidates: list[dict],
     top_n: int = 5,
-    model_id: str = "gemini-2.5-flash-preview-04-17",
+    model_id: str = "gemini-2.5-flash",
 ) -> list[BenchmarkResult]:
     """Run OHB-1 on the top-N candidates (by simulation score) before promotion.
 
