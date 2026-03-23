@@ -10,8 +10,13 @@ The total combinatorial space of harness configs we are searching:
   pattern:           3 values  [single_agent_supervisor, initializer_executor, multi_agent]
   memory:            4 values  [wm/truncate, wm/drop_oldest, fs/truncate, fs/drop_oldest]
   security:          2 values  [no guardrail, audit guardrail]
+  visual_planner:    3 values  [none, lewm, dinowm]
+    - none:   LLM handles all planning (default)
+    - lewm:   LeWorldModel JEPA (15M params, raw pixels, ~1s on Pi5+Hailo8L)
+              Paper: https://le-wm.github.io/
+    - dinowm: DINO-based world model (~47s reference baseline)
 
-Total: 8 × 7 × 7 × 7 × 2 × 2 × 3 × 4 × 2 = 263,424
+Total: 8 × 7 × 7 × 7 × 2 × 2 × 3 × 4 × 2 × 3 = 790,272
 """
 
 from __future__ import annotations
@@ -40,12 +45,13 @@ SEARCH_SPACE_AXES: dict[str, list] = {
         "filesystem/drop_oldest",
     ],
     "security": ["none", "audit"],
+    "visual_planner": ["none", "lewm", "dinowm"],
 }
 
 SEARCH_SPACE_SIZE: int = 1
 for _vals in SEARCH_SPACE_AXES.values():
     SEARCH_SPACE_SIZE *= len(_vals)
-# 8*7*7*7*2*2*3*4*2 = 263,424
+# 8*7*7*7*2*2*3*4*2*3 = 790,272
 
 _OPS_REPO = Path(os.environ.get("OPENCASTOR_OPS_DIR", Path.home() / "opencastor-ops"))
 _STATE_FILE = _OPS_REPO / "harness-research" / "search_space_state.json"

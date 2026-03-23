@@ -271,9 +271,25 @@ SECURITY_VARIATIONS: list[dict] = [
     {"guardrail": True, "mode": "audit", "telemetry": True},
 ]
 
+# ─── Visual Planner dimension (#9) ───────────────────────────────────────────
+# LeWM — JEPA visual world model (15M params, raw pixels, ~1s on Hailo8L)
+# Extends search space: 263,424 × 3 = 790,272 total configurations
+# Paper: https://le-wm.github.io/
+#
+# Values:
+#   none    — LLM handles all planning (current default)
+#   lewm    — LeWorldModel JEPA (local, offline, Pi5+Hailo8L optimised)
+#   dinowm  — DINO-based world model (heavier baseline, ~47s reference)
+
+VISUAL_PLANNER_VARIATIONS: list[dict] = [
+    {"model": "none"},
+    {"model": "lewm", "goal_source": "oak_d", "planning_horizon": 16, "cem_samples": 512, "device": "hailo"},
+    {"model": "dinowm", "goal_source": "oak_d", "planning_horizon": 16, "cem_samples": 128, "device": "cpu"},
+]
+
 
 def _apply_design_dimensions(candidates: list[dict]) -> list[dict]:
-    """Round-robin assign pattern/memory/security keys to candidates.
+    """Round-robin assign pattern/memory/security/visual_planner keys to candidates.
 
     Backward compatible — existing keys are not overwritten; adds only if absent.
     """
@@ -286,6 +302,8 @@ def _apply_design_dimensions(candidates: list[dict]) -> list[dict]:
             config["memory"] = MEMORY_VARIATIONS[i % len(MEMORY_VARIATIONS)]
         if "security" not in config:
             config["security"] = SECURITY_VARIATIONS[i % len(SECURITY_VARIATIONS)]
+        if "visual_planner" not in config:
+            config["visual_planner"] = VISUAL_PLANNER_VARIATIONS[i % len(VISUAL_PLANNER_VARIATIONS)]
         cand["config"] = config
     return candidates
 
